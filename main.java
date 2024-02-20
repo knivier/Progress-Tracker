@@ -23,30 +23,77 @@ public class main{
         }
         //code below
         System.out.println("All data has been inputted. What would you like to do next?");
-        System.out.println("[1] Compare BMIs");
         int choice = 0;
         Scanner input = new Scanner(System.in);
-        choice = input.nextInt();
         while(true){
-            input.nextLine();
+            System.out.println("[0] Exit");
+            System.out.println("[1] Compare BMIs");
+            System.out.println("[2] Analyze target BMI");
+            choice = input.nextInt();
+            if(choice == 0){
+                System.out.println("You have choosen to exit. Goodbye!");
+                System.exit(0);
+            }
             if(choice == 1){
                 System.out.println("Which day would you like to previously compare to your current date?");
                 int temp1 = input.nextInt();
                 System.out.println("What is the next date?");
                 int temp2 = input.nextInt();
                 getBMIDifferences(temp1, temp2);
-                break;
+            }
+            if(choice == 2){
+                System.out.println("What date would you like to analyze? ");
+                int temp = input.nextInt();
+                analyzeTargetBMI(temp);
             }
             else{
-
+                System.out.println("That was an invalid choice. Please try again!");
             }
+        } //end of while TRUE
+
+    } //end of main
+
+
+public static void analyzeTargetBMI(int target){
+    boolean found = false;
+    int place = 0;
+    for(int i=0; i< array.length; i++){
+        if(array[i] != null && array[i].getDays() == target){
+            found = true;
+            place = i;
         }
-
-
-
-
     }
+    if(!found){
+        System.out.println("Couldn't find target. Goodbye!");
+        System.exit(0);
+    }
+    else{
+        if(array[place].getAge() < 18){
+            System.out.println("Your BMI predictions may be inaccurate because you are a minor.");
+        }
+        System.out.println("Your BMI is: " + array[place].getBMI());
+        System.out.println("All analyzations are based on the CDC website.");
+        System.out.println("https://www.cdc.gov/healthyweight/assessing/index.html#:~:text=If%20your%20BMI%20is%20less,falls%20within%20the%20obese%20range.");
+        if(array[place].getBMI() < 18.5){
+            System.out.println("You are classified as underweight.");
+        }
+        else if(array[place].getBMI() >= 18.5 && (array[place].getBMI() <= 24.9)){
+            System.out.println("You are classified within the healthy weight range!");
+        }
+        else if((array[place].getBMI() >=25) && (array[place].getBMI() <=29.9)){
+            System.out.println("You are classified as overweight.");
+        }
+        else if(array[place].getBMI() >=30){
+            System.out.println("You are classified as obese.");
+        }
+    }    
+}
 
+
+    //start of getBMI differences
+    /*
+     * @params Requires passthrough of integer values that are positive and within date range on csv
+     */
     public static void getBMIDifferences(int x, int y){
         boolean found1 = false;
         System.out.println("Calculating BMI differences...");
@@ -68,7 +115,7 @@ public class main{
             }
         }
         if(!(found1 || found2)){
-            System.out.println("Error: Targets not found");
+            System.out.println("Error: Targets not found. Exiting system.");
             System.exit(0);
         }
         System.out.println("Aquired BMI targets.");
@@ -79,7 +126,7 @@ public class main{
                 System.out.println("You lost BMI over those days.");
             }
             else{
-                System.out.println("You gained BMI!");
+                System.out.println("You gained BMI over those days");
             }
         }
         else if(difference > 0){
@@ -87,9 +134,8 @@ public class main{
                 System.out.println("You lost BMI over those days!");
             }
             else{
-                System.out.println("You gained BMI!");
+                System.out.println("You gained BMI over those days");
             }
         }
-        }
     }
-
+}
